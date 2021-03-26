@@ -12,10 +12,11 @@
 namespace FOS\UserBundle\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
@@ -50,8 +51,6 @@ class UserListener implements EventSubscriber
 
     /**
      * Pre persist listener based on doctrine common.
-     *
-     * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -63,10 +62,8 @@ class UserListener implements EventSubscriber
 
     /**
      * Pre update listener based on doctrine common.
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $object = $args->getObject();
         if ($object instanceof UserInterface) {
